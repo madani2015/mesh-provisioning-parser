@@ -97,10 +97,12 @@ class MeshConfirm(MeshBase):
     def __init__(self, packet: pyshark.packet.packet.Packet):
         super().__init__(packet)
         prov_layer = packet['PROVISIONING']
-       
-        self.confirm= prov_layer.confirmation
-       
-        print(f"MeshConfirm : confirmation {self.confirm}")
+        if hasattr(prov_layer, 'confirmation') and prov_layer.confirmation is not None:
+            self.confirm= prov_layer.confirmation
+            print(f"MeshConfirm : confirmation {self.confirm}")
+        
+        else:
+            print("MeshConfirm : confirmation field is None or does not exist")
         
         
     
@@ -157,6 +159,7 @@ if __name__ == "__main__":
     check_s = []
     rand_dev= []
     rand_prov = []
+    
     for pkt in pkts:
         pdu_type = pkt['PROVISIONING'].pdu_type # extract pdu_type
         direction = pkt['NORDIC_BLE'].direction
@@ -176,6 +179,7 @@ if __name__ == "__main__":
             parsed.append(MeshKeys(pkt))
         
         elif pdu_type == '5':
+            
             parsed.append(MeshConfirm(pkt))
             if (direction == '1'):
                 check_m.append((pkt['PROVISIONING'].confirmation))

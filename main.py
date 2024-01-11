@@ -31,12 +31,17 @@ if __name__ == "__main__":
             rand_prov = MeshRandom(pkt).random
             rand_dev = MeshRandom(pkt).random
             
+            
             rand_prov_instance = MeshRandom(pkt)
+            confirm_prov_instace= MeshConfirm(pkt)
+            
             
             rand_dev_instance = MeshRandom(pkt)
-            
+            confirm_dev_instace= MeshConfirm(pkt)
             detector.rand_prov = rand_prov_instance
             detector.rand_dev = rand_dev_instance
+            detector.conf_prov= confirm_prov_instace
+            detector.confirm_dev= confirm_dev_instace
            
             
         elif pdu_type == '2':
@@ -87,7 +92,7 @@ if __name__ == "__main__":
             parsed.append(MeshComplete(pkt))
 	
     else:
-        print("No reflection or relay attacks detected. The network is safe.")
+        print("No reflection attack detected. The network is safe.")
     
 
 
